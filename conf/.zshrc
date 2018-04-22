@@ -98,12 +98,25 @@ bindkey "^N" history-beginning-search-forward-end
 
 
 # -------------------------------------
+# github
+# -------------------------------------
+autoload -Uz vcs_info
+setopt prompt_subst
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
+zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
+zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
+zstyle ':vcs_info:*' actionformats '[%b|%a]'
+precmd () { vcs_info }
+
+
+# -------------------------------------
 # プロンプト
 # -------------------------------------
 # ログイン名@ホスト名
 #PROMPT='[%n@%m]$ '
 # ホスト名
-PROMPT='[%m]$ '
+PROMPT='[%m]${vcs_info_msg_0_}$ '
 
 # カレントディレクトリ
 RPROMPT='[%d]'
@@ -112,4 +125,4 @@ RPROMPT='[%d]'
 setopt transient_rprompt
 
 ## cd したら ls
-function chpwd() { ls }
+function chpwd() { ls -a }
