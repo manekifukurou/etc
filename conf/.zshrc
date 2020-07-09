@@ -113,16 +113,20 @@ precmd () { vcs_info }
 # -------------------------------------
 # プロンプト
 # -------------------------------------
-# ログイン名@ホスト名
-#PROMPT='[%n@%m]$ '
-# ホスト名
-PROMPT='[%m]${vcs_info_msg_0_}$ '
+re-prompt() {
+    zle .reset-prompt
+    zle .accept-line
+}
+zle -N accept-line re-prompt
 
-# カレントディレクトリ
-RPROMPT='[%d]'
+# プロンプト表示
+PROMPT="[%n@%m][%F{green}%D{%Y-%m-%d %H:%M:%S}%f][%F{blue}%d%f]"'${vcs_info_msg_0_}'"
+$ "
 
-## コピペしやすいようにコマンド実行後は右プロンプトを消す。
-setopt transient_rprompt
+# cd したら ls
+function chpwd() { 
+    ls
+}
 
-## cd したら ls
-function chpwd() { ls -a }
+# 3秒以上かかった処理は詳細表示
+PREPORTTIME=3
